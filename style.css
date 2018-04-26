@@ -1,0 +1,44 @@
+body {
+    color: #000;
+    position: relative;
+}
+.left-btn, .right-btn {
+    position: fixed;
+    z-index: 500;
+    background: #FA8072;
+    padding: 5px 10px;
+    color: #000;
+    font-size: 14px;
+    top: 15px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+.left-btn {
+    left: 20px;
+}
+.right-btn {
+    right: 20px;
+}
+.article {
+    padding: 5px;
+    margin-top: 5px;
+}
+.article:first-child {
+    margin-top: 0;
+}
+.title {
+    background: #4B0082;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    width: 100%;
+}
+.sticky {
+    position: fixed;
+    z-index: 101;
+}
+.stop {
+    position: relative;
+    z-index: 101;
+}
