@@ -1,54 +1,69 @@
-document.querySelector('.left-btn').addEventListener('click', initialize);
-document.querySelector('.right-btn').addEventListener("click", disable);
-function initialize() {
-    Array.prototype.slice.call(document.querySelectorAll('#main-block .title')).forEach(function(a) {
-        var b = null, P = 0;
-        window.addEventListener('scroll', Ascroll, false);
-        function Ascroll() {
-            if (b == null) {
-                var getStyle = getComputedStyle(a, ''), s = '';
-                for (var i = 0; i < getStyle.length; i++) {
-                    if (getStyle[i].indexOf('overflow') == 0 || getStyle[i].indexOf('padding') == 0 || getStyle[i].indexOf('border') == 0 || getStyle[i].indexOf('outline') == 0 || getStyle[i].indexOf('box-shadow') == 0 || getStyle[i].indexOf('background') == 0) {
-                        s += getStyle[i] + ': ' +getStyle.getPropertyValue(getStyle[i]) + '; '
+'use strict';
+document.addEventListener('DOMContentLoaded', function() {
+   var page = new Page(document.getElementById('main-block'));
+});
+
+class Page {
+    constructor(field) {
+        this.field = field;
+        this.initialize = this.initialize.bind(this);
+        this.disable = this.disable.bind(this);
+        this.initializeBtn = this.field.querySelector('button.left-btn');
+        this.disableBtn = this.field.querySelector('button.right-btn');
+
+        this.initializeBtn.addEventListener('click', this.initialize);
+        this.disableBtn.addEventListener("click", this.disable);
+    }
+    initialize() {
+        Array.prototype.slice.call(document.querySelectorAll('#main-block .title')).forEach(function(elem) {
+            var newElement = null, countOfPixels = 0;
+            window.addEventListener('scroll', Ascroll, false);
+            function Ascroll() {
+                if (newElement == null) {
+                    var getStyle = getComputedStyle(elem, ''), newStyle = '';
+                    for (var i = 0; i < getStyle.length; i++) {
+                        if (getStyle[i].indexOf('overflow') == 0 || getStyle[i].indexOf('padding') == 0 || getStyle[i].indexOf('border') == 0 || getStyle[i].indexOf('outline') == 0 || getStyle[i].indexOf('box-shadow') == 0 || getStyle[i].indexOf('background') == 0) {
+                            newStyle += getStyle[i] + ': ' +getStyle.getPropertyValue(getStyle[i]) + '; '
+                        }
                     }
+                    newElement = document.createElement('div');
+                    newElement.style.cssText = newStyle + ' box-sizing: border-box; width: ' + elem.offsetWidth + 'px;';
+                    elem.insertBefore(newElement, elem.firstChild);
+                    var lenghtOfChildren = elem.childNodes.length;
+                    for (var i = 1; i < lenghtOfChildren; i++) {
+                        newElement.appendChild(elem.childNodes[1]);
+                    }
+                    elem.style.height = newElement.getBoundingClientRect().height + 'px';
                 }
-                b = document.createElement('div');
-                b.style.cssText = s + ' box-sizing: border-box; width: ' + a.offsetWidth + 'px;';
-                a.insertBefore(b, a.firstChild);
-                var l = a.childNodes.length;
-                for (var i = 1; i < l; i++) {
-                    b.appendChild(a.childNodes[1]);
-                }
-                a.style.height = b.getBoundingClientRect().height + 'px';
-            }
-            var element = a.getBoundingClientRect(),
-                count = Math.round(element.top + b.getBoundingClientRect().height - a.parentNode.getBoundingClientRect().bottom + parseFloat(getComputedStyle(a.parentNode, '').paddingBottom.slice(0, -2)));
-            if ((element.top - P) <= 0) {
-                if ((element.top - P) <= count) {
-                    b.className = 'stop';
-                    b.style.top = - count +'px';
+                var element = elem.getBoundingClientRect(),
+                    count = Math.round(element.top + newElement.getBoundingClientRect().height - elem.parentNode.getBoundingClientRect().bottom + parseFloat(getComputedStyle(elem.parentNode, '').paddingBottom.slice(0, -2)));
+                if ((element.top - countOfPixels) <= 0) {
+                    if ((element.top - countOfPixels) <= count) {
+                        newElement.className = 'stop';
+                        newElement.style.top = - count +'px';
+                    } else {
+                        newElement.className = 'sticky';
+                        newElement.style.top = countOfPixels + 'px';
+                    }
                 } else {
-                    b.className = 'sticky';
-                    b.style.top = P + 'px';
+                    newElement.className = '';
+                    newElement.style.top = '';
                 }
-            } else {
-                b.className = '';
-                b.style.top = '';
+                window.addEventListener('resize', function() {
+                    elem.children[0].style.width = getComputedStyle(elem, '').width
+                }, false);
             }
-            window.addEventListener('resize', function() {
-                a.children[0].style.width = getComputedStyle(a, '').width
-            }, false);
-        }
-    });
-}
-function disable() {
-    window.addEventListener('scroll', deleteBlock, false);
-    deleteBlock();
-    function deleteBlock() {
-        var element = document.querySelectorAll('.title div');
-        for (var i=0; i<element.length; i++) {
-            element[i].classList.remove('sticky');
-            element[i].classList.remove('stop');
+        });
+    }
+    disable() {
+        window.addEventListener('scroll', deleteBlock, false);
+        deleteBlock();
+        function deleteBlock() {
+            var element = document.querySelectorAll('.title div');
+            for (var i=0; i<element.length; i++) {
+                element[i].classList.remove('sticky');
+                element[i].classList.remove('stop');
+            }
         }
     }
 }
