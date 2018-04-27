@@ -17,8 +17,8 @@ class Page {
     initialize() {
         Array.prototype.slice.call(document.querySelectorAll('#main-block .title')).forEach(function(elem) {
             var newElement = null, countOfPixels = 0;
-            window.addEventListener('scroll', Ascroll, false);
-            function Ascroll() {
+            window.addEventListener('scroll', scrollPages, false);
+            function scrollPages() {
                 if (newElement == null) {
                     var getStyle = getComputedStyle(elem, ''), newStyle = '';
                     for (var i = 0; i < getStyle.length; i++) {
