@@ -15,7 +15,7 @@ class Page {
         this.disableBtn.addEventListener("click", this.disable);
     }
     initialize() {
-        Array.prototype.slice.call(document.querySelectorAll('#main-block .title')).forEach(function(elem) {
+        Array.prototype.slice.call(document.querySelectorAll('.title')).forEach(function(elem) {
             var newElement = null, countOfPixels = 0;
             window.addEventListener('scroll', scrollPages, false);
             function scrollPages() {
@@ -56,9 +56,9 @@ class Page {
         });
     }
     disable() {
-        window.addEventListener('scroll', deleteBlock, false);
-        deleteBlock();
-        function deleteBlock() {
+        window.addEventListener('scroll', deleteClass);
+        deleteClass();
+        function deleteClass() {
             var element = document.querySelectorAll('.title div');
             for (var i=0; i<element.length; i++) {
                 element[i].classList.remove('sticky');
